@@ -1,0 +1,43 @@
+[
+    {
+        "name": "loki",
+        "image": "${loki_image}:${loki_image_tag}",
+        "essential": true,
+        "stopTimeout": 120,
+        "portMappings": [
+            {
+                "hostPort": 3100,
+                "containerPort": 3100,
+                "protocol": "tcp"
+            }
+        ],
+        "mountPoints": [
+            {
+                "sourceVolume": "efs",
+                "containerPath": "/rules"
+            }
+        ],
+        "environment": [],
+        "secrets": [
+            {
+                "name": "ALERTMANAGER_USER",
+                "valueFrom": "${alertmanager_user}"
+            },
+            {
+                "name": "ALERTMANAGER_PASS",
+                "valueFrom": "${alertmanager_pass}"
+            }
+        ],
+        "volume": [],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-create-group": "true",
+                "awslogs-group": "/aws/ecs/monitoring/loki",
+                "awslogs-region": "eu-central-1",
+                "awslogs-stream-prefix": "service"
+            }
+        },
+        "dependsOn": []
+    }
+]

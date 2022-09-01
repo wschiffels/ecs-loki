@@ -1,0 +1,36 @@
+[
+    {
+        "name": "updateContainer",
+        "image": "rubarbapp/docker-monitoring-init:latest",
+        "essential": true,
+        "stopTimeout": 120,
+        "portMappings": [],
+        "secrets": [
+            {
+                "name": "SSH_PRIVATE_KEY",
+                "valueFrom": "${ssh_private_key}"
+            }
+        ],
+        "mountPoints": [
+            {
+                "sourceVolume": "efs",
+                "containerPath": "/loki"
+            }
+        ],
+        "entrypoint": [],
+        "command": [
+            "loki"
+        ],
+        "volume": [],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-create-group": "true",
+                "awslogs-group": "/aws/ecs/monitoring/lokiUpdateContainer",
+                "awslogs-region": "eu-central-1",
+                "awslogs-stream-prefix": "task"
+            }
+        },
+        "dependsOn": []
+    }
+]
